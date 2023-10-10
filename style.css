@@ -1,0 +1,18 @@
+img{
+    /* width: 200px; */
+    height: 120px;
+    max-width: 50%;
+    display: block;
+    margin: 40px auto 10px auto;
+}
+
+.card-body .card-body1{
+    height: 150px;
+}
+
+.card .card1{
+    margin: 15px 0;
+    height: 320px;
+    overflow: hidden;
+}
+
