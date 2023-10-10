@@ -16,11 +16,10 @@ async function fetchProducts() {
         const response = await fetch('https://fakestoreapi.com/products');
         const data = await response.json();
         console.log(typeof(data[0]));
-        // Take the first 20 products
-        const productsData = data.slice(0, 20); 
+       
+        const productsData = data; 
         //console.log(productsData);
 
-        // Create Product objects from the API data and assign it to 'products' array
             products = productsData.map(product => {
             return new Product(product.image,product.title, product.price);
          });
@@ -28,9 +27,9 @@ async function fetchProducts() {
 
         products.map(product => {
             document.getElementById('jsRow').innerHTML += `<div class="col col-md-4">
-            <div class="card card1" style="width: 14rem;">
+            <div class="card" id="productCard" style="width: 14rem;">
                 <img src="${product.imageurl}" class="card-img-top" alt="...">
-                <div class="card-body card-body1">
+                <div class="card-body" id="body">
                     <p class="card-text"><h6>${product.title}</h6>
                     <p>Price: ${product.price}</p>
                 </div>
@@ -44,30 +43,26 @@ async function fetchProducts() {
     }
 }
 
+fetchProducts();
+
+//----------------------------------------------------------------------------------------------------
 
 
-
+//GET POSTS
 async function fetchPosts(){
 try {
     const response = await fetch('http://localhost:3000/posts');
     const data = await response.json();
     console.log(data);
-    // Take the first 20 products
-    // const productsData = data.slice(0, 20); 
-    //console.log(productsData);
-
-    // Create Product objects from the API data and assign it to 'products' array
-    //     products = productsData.map(product => {
-    //     return new Product(product.image,product.title, product.price);
-    //  });
-    // console.log(typeof(products[0]));
 
     data.map(d => {
+        console.log(d.id);
         document.getElementById('jsRow1').innerHTML += `<div class="card w-75 mb-5">
         <div class="card-body">
           <h5 class="card-title" id="idd">${d.id}</h5>
           <p class="card-text">${d.title}</p>
-          <a href="#" class="btn btn-dark" id="delete">Delete</a>
+          <a  class="btn btn-dark" onclick="deleteCard(${d.id})" >Delete</a>
+          <a  class="btn btn-primary" onclick="updateCard(${d.id})" ">Update</a>
         </div>
       </div>`;
         
@@ -78,9 +73,10 @@ try {
 }
 }
 
+
 fetchPosts();
 
-
+//POST A POST 
 button.addEventListener("click", function(){
     var post=document.getElementById("validationTextarea").value;
 
@@ -100,24 +96,41 @@ button.addEventListener("click", function(){
             .then(res=>res.json())
             .then(json=>console.log(json))
 
-            fetchPosts();
+            document. location. reload();
 })
 
-fetchProducts();
 
-idd=document.getElementById("idd")
-function deleteCard(){
-    fetch('http://localhost:3000/posts/${idd}',{
+//DELETE A CARD 
+function deleteCard(productId){
+    fetch(`http://localhost:3000/posts/${productId}`,{
             method:"DELETE"
         })
             .then(res=>res.json())
             .then(json=>console.log(json))
-            fetchPosts();
+            document. location. reload();
+          
             
 }
 
-deleteBtn=document.getElementById('delete');
 
-deleteBtn.addEventListener("click", function(){
-    deleteCard();
-})
+
+//UPDATE A CARD
+function updateCard(productId){
+    newPost=prompt("update your comment");
+    console.log(newPost)
+     fetch(`http://localhost:3000/posts/${productId}`,{
+             method:"PUT",
+             headers: {
+                'Content-Type': 'application/json'
+            } ,
+             body: JSON.stringify(
+                {
+                    title: newPost
+                } )
+         })
+             .then(res=>res.json())
+             .then(json=>console.log(json))
+             document.location.reload();
+           
+             
+ }

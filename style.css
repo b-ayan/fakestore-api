@@ -6,13 +6,18 @@ img{
     margin: 40px auto 10px auto;
 }
 
-.card-body .card-body1{
+#body{
     height: 150px;
 }
 
-.card .card1{
+#productCard {
     margin: 15px 0;
     height: 320px;
     overflow: hidden;
+}
+
+footer{
+    background-color: #262626;
+    color: white;
 }
 
